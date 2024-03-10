@@ -1,10 +1,14 @@
 package itm.pbl.clocky.ui.screens
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,31 +27,47 @@ fun AlarmScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = Routes.ALARM_SCREEN)
-        AnalogClock()
+        //Text(text = Routes.ALARM_SCREEN)
+        testColor()
     }
 }
 
-@Composable
-fun AnalogClock() {
-    Box(modifier = Modifier.fillMaxSize()){
-        Canvas(modifier = Modifier.fillMaxSize()) {
 
-            val radius = size.width * .4f
-            drawCircle(
-                color = Color.Black,
-                style = Stroke(width = radius*0.5f),
-                radius = radius,
-                center = size.center
-            )
+@Composable
+fun testColor() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column {
+            Box(modifier = Modifier
+                .background(MaterialTheme.colorScheme.onBackground)
+                .fillMaxWidth())
+            {
+                Text(text = "onBackground")
+            }
+            Box(modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxWidth())
+            {
+                Text(text = "background")
+            }
+            Box(modifier = Modifier
+                .background(MaterialTheme.colorScheme.primary)
+                .fillMaxWidth())
+            {
+                Text(text = "Primary")
+            }
+            Box(modifier = Modifier
+                .background(MaterialTheme.colorScheme.errorContainer)
+                .fillMaxWidth())
+            {
+                Text(text = "errorContainer")
+            }
+            Box(modifier = Modifier
+                .background(MaterialTheme.colorScheme.inversePrimary)
+                .fillMaxWidth())
+            {
+                Text(text = "inversePrimary")
+            }
+
         }
     }
-    
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun AnalogClockPrev() {
-    AnalogClock()
-    
 }
