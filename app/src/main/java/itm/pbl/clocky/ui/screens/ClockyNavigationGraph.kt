@@ -14,7 +14,8 @@ fun ClockyNavigationGraph(
 
     NavHost(navController = navHostController,
         startDestination = startDestination,
-        builder = {
+    )
+        {
             composable(Routes.CLOCK_SCREEN) {
                 ClockScreen()
             }
@@ -27,7 +28,7 @@ fun ClockyNavigationGraph(
             composable(Routes.TIMER_SCREEN) {
                 TimerScreen()
             }
-        })
+        }
 }
 
 sealed class Screens(val route: String, val label: String, val icon:Int) {

@@ -3,6 +3,8 @@ package itm.pbl.clocky
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.setContent
 import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
@@ -47,7 +49,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import itm.pbl.clocky.ui.screens.ClockyNavigationGraph
+import itm.pbl.clocky.ui.screens.Routes
 import itm.pbl.clocky.ui.screens.Screens
+import itm.pbl.clocky.ui.screens.Screens.Alarm.route
 import itm.pbl.clocky.ui.theme.ClockyTheme
 
 class MainActivity : ComponentActivity() {
@@ -58,6 +62,12 @@ class MainActivity : ComponentActivity() {
                 ClockyApp()
             }
         }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }
 
@@ -83,8 +93,6 @@ fun ClockyApp() {
 @OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
 fun BottomNav(navController: NavHostController) {
-
-
     var selectedIndex by remember {
         mutableIntStateOf(0)
     }
@@ -94,10 +102,11 @@ fun BottomNav(navController: NavHostController) {
         Screens.Pomodoro,
         Screens.Timer
     )
-    NavigationBar(modifier = Modifier
-        .padding(15.dp)
-        .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
-        .clip(RoundedCornerShape(20.dp))
+    NavigationBar(
+        modifier = Modifier
+            .padding(15.dp)
+            .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(20.dp))
     ) {
         list.forEachIndexed { index, screens ->
             val state = remember { mutableStateOf(false) }
