@@ -1,5 +1,7 @@
-package itm.pbl.clocky.ui.screens
+package itm.pbl.clocky.ui.pomodoro
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,7 +73,7 @@ fun PomodoroScreen() {
 
     // timer logic
     if (totalTime == 0L) {
-        val timing = 30 * 60
+        val timing = 2 * 60
         totalTime = timing.toLong()
         timeLeft = totalTime
     }
@@ -85,8 +87,7 @@ fun PomodoroScreen() {
     }
 
     LaunchedEffect(
-        key1 = timeLeft,
-        key2 = isPaused
+        key1 = timeLeft, key2 = isPaused
     ) {
         while (timeLeft > 0 && !isPaused) {
             delay(1000L)
@@ -107,8 +108,16 @@ fun PomodoroScreen() {
         }
     }
 
+    // animation
+    val progressBarAnim = remember { Animatable(100f) }
+    LaunchedEffect(key1 = Unit) {
+        progressBarAnim.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(2000),
+        )
+    }
+
     val calcProgress = ((timeLeft.toFloat() / totalTime.toFloat()) * 100f)
-    val timerProgress = 100f - calcProgress
 
     TopAppBar(
         modifier = Modifier.fillMaxWidth(),
@@ -125,11 +134,10 @@ fun PomodoroScreen() {
             }
         },
 
-    )
+        )
 
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -140,8 +148,8 @@ fun PomodoroScreen() {
                 .fillMaxSize(0.5f),
             contentAlignment = Alignment.Center
         ) {
-            // CustomCircularProgressBar(calcProgress)
-            CustomCircularProgressIndicator(timerProgress)
+//            CustomCircularProgressIndicator(progressBarAnim.value)
+            CustomCircularProgressIndicator(initialValue = if (progressBarAnim.value != 1f) progressBarAnim.value else 100f-calcProgress)
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -156,7 +164,7 @@ fun PomodoroScreen() {
             }
         }
         Text(
-            text = if (timeLeft > totalTime - 25*60) "Focus" else "Enjoy",
+            text = if (timeLeft > totalTime - 0.5 * 60) "Focus" else "Enjoy",
             fontFamily = FontFamily.SansSerif,
             fontSize = 30.sp,
             color = Color.Black
@@ -164,8 +172,7 @@ fun PomodoroScreen() {
         Spacer(modifier = Modifier.height(10.dp))
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Absolute.SpaceEvenly
         ) {

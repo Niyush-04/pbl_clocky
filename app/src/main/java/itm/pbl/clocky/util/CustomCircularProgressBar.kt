@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import itm.pbl.clocky.ui.theme.from
+import itm.pbl.clocky.ui.theme.tooo
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -29,8 +31,8 @@ import kotlin.math.sin
 @Composable
 fun CustomCircularProgressIndicator(
     initialValue: Float,
-    primaryColor: Color = MaterialTheme.colorScheme.primary,
-    secondaryColor: Color = MaterialTheme.colorScheme.onPrimary.copy(0.50f),
+    primaryColor: Color = from,
+    secondaryColor: Color = tooo,
     minValue: Int = 0,
     maxValue: Int = 100,
     circleRadius: Float = 300f,
@@ -80,7 +82,7 @@ fun CustomCircularProgressIndicator(
             val gap = 15f
             for (i in 1..(maxValue - minValue)) {
                 val color =
-                    if (i < initialValue - minValue) primaryColor else primaryColor.copy(alpha = .3f)
+                    if (i < initialValue) primaryColor else primaryColor.copy(alpha = .3f)
                 val angleInDegree = i * 360f / (maxValue - minValue).toFloat()
                 val angleInRad = angleInDegree * PI / 180f + PI / 2f
 
@@ -115,6 +117,6 @@ fun CustomCircularProgressIndicator(
 @Composable
 fun CustomCircularProgressIndicatorPrev() {
     CustomCircularProgressIndicator(
-        initialValue = 50f, circleRadius = 300f
+        initialValue = 75f, circleRadius = 300f
     )
 }

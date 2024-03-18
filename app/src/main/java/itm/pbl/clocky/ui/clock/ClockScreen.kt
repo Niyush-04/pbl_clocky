@@ -1,5 +1,8 @@
-package itm.pbl.clocky.ui.screens
+package itm.pbl.clocky.ui.clock
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,7 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -68,9 +71,9 @@ fun TopBar() {
 
 @Composable
 fun MainClock() {
-    var currentHour by remember { mutableStateOf(0) }
-    var currentMinute by remember { mutableStateOf(0) }
-    var currentSecond by remember { mutableStateOf(0) }
+    var currentHour by remember { mutableIntStateOf(0) }
+    var currentMinute by remember { mutableIntStateOf(0) }
+    var currentSecond by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -81,11 +84,24 @@ fun MainClock() {
             currentSecond = currentTime.second
         }
     }
-    AnalogClockComponent(hour = currentHour, minute = currentMinute, second = currentSecond)
+
+    val hourRotation by animateFloatAsState(
+        targetValue = currentHour.toFloat() % 12,
+        animationSpec = tween(durationMillis = 1000, easing = LinearEasing), label = ""
+    )
+    val minuteRotation by animateFloatAsState(
+        targetValue = currentMinute.toFloat() % 60f,
+        animationSpec = tween(durationMillis = 1000, easing = LinearEasing), label = ""
+    )
+    val secondRotation by animateFloatAsState(
+        targetValue = currentSecond % 60f,
+        animationSpec = tween(durationMillis = 1000, easing = LinearEasing), label = ""
+    )
+    AnalogClockComponent(hour = hourRotation, minute = minuteRotation, second = secondRotation)
 }
 
 @Composable
-fun AnalogClockComponent(hour: Int, minute: Int, second: Int) {
+fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
     Box(
         modifier = Modifier
             .fillMaxSize(0.8f)
@@ -103,82 +119,78 @@ fun AnalogClockComponent(hour: Int, minute: Int, second: Int) {
             val width = size.width
             val height = size.height
 
-            val start = center - Offset(0f, radius)
-            val end = start + Offset(0f, radius / 40f)
 
             val secondRatio = second / 60f
             val minuteRation = minute / 60f
             val houRation = hour / 12f
 
-            val startAngle = 270 + second * 6f
             val circleThickness = width / 15f
 
-            val dialRadius = circleThickness
             val dialOffset = Offset(
                 (width / 2) + (radius),
                 (height / 2)
             )
 
-
             rotate(secondRatio * 360, center) {
-                drawArc(
-                    brush = Brush.sweepGradient(
-                        0f to from,
-                        1f to tooo
-                    ),
-                    startAngle = startAngle,
-                    sweepAngle = 360f,
-                    style = Stroke(
-                        width = circleThickness,
-                        cap = StrokeCap.Round
-                    ),
-                    useCenter = false,
-                    size = Size(
-                        width = radius * 2f,
-                        height = radius * 2f
-                    ),
-                    topLeft = Offset(
-                        (width - radius * 2f) / 2f,
-                        (height - radius * 2f) / 2f
+                rotate(-90f, center) {
+                    drawArc(
+                        brush = Brush.sweepGradient(
+                            0f to from,
+                            0.25f to tooo,
+                            1f to tooo
+                        ),
+                        startAngle = 0f,
+                        sweepAngle = 360f,
+                        style = Stroke(
+                            width = circleThickness,
+                            cap = StrokeCap.Round
+                        ),
+                        useCenter = false,
+                        size = Size(
+                            width = radius * 2f,
+                            height = radius * 2f
+                        ),
+                        topLeft = Offset(
+                            (width - radius * 2f) / 2f,
+                            (height - radius * 2f) / 2f
+                        )
                     )
-                )
-                drawCircle(
-                    color = tooo,
-                    radius = dialRadius / 2,
-                    center = dialOffset
-                )
-                drawCircle(
-                    color = Color.White.copy(1f),
-                    radius = dialRadius / 3,
-                    center = dialOffset
-                )
+                    drawCircle(
+                        color = tooo,
+                        radius = circleThickness / 2,
+                        center = dialOffset
+                    )
+                    drawCircle(
+                        color = Color.White.copy(1f),
+                        radius = circleThickness / 3,
+                        center = dialOffset
+                    )
+                }
             }
-
 
             rotate(houRation * 360, center) {
                 drawLine(
-                    color = tooo,
+                    color = from,
                     start = center - Offset(0f, radius * 0.6f),
                     end = center + Offset(0f, radius * 0.1f),
-                    strokeWidth = 5.dp.toPx(),
+                    strokeWidth = 10.dp.toPx(),
                     cap = StrokeCap.Round
                 )
             }
             rotate(minuteRation * 360, center) {
                 drawLine(
-                    color = from,
+                    color = tooo,
                     start = center - Offset(0f, radius * 0.8f),
                     end = center + Offset(0f, radius * 0.1f),
-                    strokeWidth = 4.dp.toPx(),
+                    strokeWidth = 8.dp.toPx(),
                     cap = StrokeCap.Round
                 )
-                drawCircle(
-                    color = Color.White.copy(1f),
-                    radius = 3.dp.toPx(),
-                    center = center
-                )
             }
-
+            drawCircle(
+                color = Color.LightGray.copy(1f),
+                radius = 2.dp.toPx(),
+                center = center
+            )
         }
     }
 }
@@ -187,5 +199,5 @@ fun AnalogClockComponent(hour: Int, minute: Int, second: Int) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 private fun AnalogClockComponentPrev() {
-    TopBar()
+    AnalogClockComponent(hour = 5f, minute = 30f, second = 0f)
 }
