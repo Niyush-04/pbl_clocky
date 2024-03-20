@@ -2,6 +2,10 @@ package itm.pbl.clocky.ui.pomodoro
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
+import androidx.compose.animation.graphics.res.animatedVectorResource
+import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
+import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,10 +16,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
@@ -41,11 +42,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import itm.pbl.clocky.R
+import itm.pbl.clocky.ui.theme.from
+import itm.pbl.clocky.ui.theme.tooo
 import itm.pbl.clocky.util.CustomCircularProgressIndicator
 import itm.pbl.clocky.util.vibrateDevice
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationGraphicsApi::class)
 @Composable
 fun PomodoroScreen() {
     val context = LocalContext.current
@@ -149,7 +153,7 @@ fun PomodoroScreen() {
             contentAlignment = Alignment.Center
         ) {
 //            CustomCircularProgressIndicator(progressBarAnim.value)
-            CustomCircularProgressIndicator(initialValue = if (progressBarAnim.value != 1f) progressBarAnim.value else 100f-calcProgress)
+            CustomCircularProgressIndicator(initialValue = if (progressBarAnim.value != 1f) progressBarAnim.value else 100f - calcProgress)
             Column(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -176,44 +180,47 @@ fun PomodoroScreen() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Absolute.SpaceEvenly
         ) {
+            val state = remember {
+                mutableStateOf(false)
+            }
+            val painter = rememberAnimatedVectorPainter(
+                animatedImageVector = AnimatedImageVector.animatedVectorResource(
+                    id = R.drawable.avd_playpausestop_play_to_pause
+                ),
+                atEnd = state.value
+            )
+
             FloatingActionButton(
                 onClick = {
                     isPaused = !isPaused
                     isReset = false
+                    state.value = !state.value
                 },
                 shape = CircleShape,
                 elevation = FloatingActionButtonDefaults.elevation(4.dp),
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = Color.LightGray
+                containerColor = from,
             ) {
                 Icon(
-                    imageVector = if (isPaused) Icons.Default.PlayArrow else Icons.Default.KeyboardArrowUp,
+                    painter = painter,
                     tint = MaterialTheme.colorScheme.onPrimary,
                     contentDescription = null
                 )
             }
-
             FloatingActionButton(
                 onClick = {
                     isReset = true
+                    state.value = !state.value
                 },
                 shape = CircleShape,
                 elevation = FloatingActionButtonDefaults.elevation(4.dp),
-                containerColor = Color.LightGray,
-                contentColor = MaterialTheme.colorScheme.secondary
+                containerColor = from,
             ) {
                 Icon(
-                    imageVector = Icons.Default.Refresh,
+                    painter = painter,
                     tint = MaterialTheme.colorScheme.onPrimary,
                     contentDescription = null
                 )
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PomodoroScreenPreview() {
-    PomodoroScreen()
 }

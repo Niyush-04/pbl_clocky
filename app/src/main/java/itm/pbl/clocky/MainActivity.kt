@@ -7,10 +7,10 @@ import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
 import androidx.compose.animation.graphics.vector.AnimatedImageVector
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -31,7 +31,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import itm.pbl.clocky.ui.ClockyNavigationGraph
 import itm.pbl.clocky.ui.Screens
-import itm.pbl.clocky.ui.Screens.Alarm.route
 import itm.pbl.clocky.ui.theme.ClockyTheme
 
 class MainActivity : ComponentActivity() {
@@ -65,7 +64,7 @@ fun ClockyApp() {
             }
         ) {
             it
-            ClockyNavigationGraph(navController, route)
+            ClockyNavigationGraph(navController, Screens.Clock.route)
         }
     }
 }
@@ -79,8 +78,7 @@ fun BottomNav(navController: NavHostController) {
     val list = listOf(
         Screens.Clock,
         Screens.Alarm,
-        Screens.Pomodoro,
-        Screens.Timer
+        Screens.Pomodoro
     )
     NavigationBar(
         modifier = Modifier
@@ -101,9 +99,11 @@ fun BottomNav(navController: NavHostController) {
                     selectedIndex = index
                     state.value = !state.value
                 },
-                icon = {
-                    Image(
-                        painter = painter, contentDescription = null
+                {
+                    Icon(
+                        painter = painter,
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = null
                     )
                 },
                 label = {
