@@ -32,23 +32,20 @@ fun ClockyNavigationGraph(
     }
 }
 
-sealed class Screens(val route: String, val label: String, val icon: Int) {
+sealed class Screens(val route: String, val icon: Int) {
 
     data object Alarm : Screens(
         route = Routes.ALARM_SCREEN,
-        label = "Alarm",
         icon = R.drawable.avd_clock_alarm
     )
 
     data object Clock : Screens(
         route = Routes.CLOCK_SCREEN,
-        label = "Clock",
         icon = R.drawable.avd_clock_clock
     )
 
     data object Pomodoro : Screens(
         route = Routes.POMODORO_SCREEN,
-        label = "Pomodoro",
         icon = R.drawable.avd_clock_stopwatch
     )
 

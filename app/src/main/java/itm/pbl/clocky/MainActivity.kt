@@ -8,6 +8,8 @@ import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
 import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -82,9 +84,11 @@ fun BottomNav(navController: NavHostController) {
     )
     NavigationBar(
         modifier = Modifier
-            .padding(15.dp)
-            .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
-            .clip(RoundedCornerShape(20.dp))
+            .fillMaxWidth(0.7f)
+            .height(100.dp)
+            .padding(start = 30.dp, bottom = 25.dp, end = 15.dp, top = 15.dp)
+            .shadow(elevation = 5.dp, shape = RoundedCornerShape(100.dp))
+            .clip(RoundedCornerShape(100.dp))
     ) {
         list.forEachIndexed { index, screens ->
             val state = remember { mutableStateOf(false) }
@@ -106,9 +110,6 @@ fun BottomNav(navController: NavHostController) {
                         contentDescription = null
                     )
                 },
-                label = {
-                    Text(text = screens.label)
-                }
             )
         }
     }

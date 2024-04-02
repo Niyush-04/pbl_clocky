@@ -16,13 +16,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.materialIcon
-import androidx.compose.material3.AlertDialogDefaults.shape
+import androidx.compose.material.icons.twotone.AddCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -38,24 +35,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import java.time.LocalTime
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import itm.pbl.clocky.ui.theme.from
 import itm.pbl.clocky.ui.theme.tooo
+import itm.pbl.clocky.util.CustomTopAppBar
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -68,13 +61,43 @@ fun ClockScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(15.dp),
+            .padding(top = 5.dp, start = 15.dp, end = 0.dp, bottom = 0.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        CustomTopAppBar(title = "Clock")
         MainClock()
         ClockCard(location = "London", offsetHours = 0)
         ClockCard(location = "New York", offsetHours = -5)
         ClockCard(location = "Mumbai", offsetHours = 5)
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            Box(
+                modifier = Modifier
+                    .shadow(
+                        elevation = 15.dp,
+                        shape = RoundedCornerShape(
+                            topStart = 25.dp,
+                            topEnd = 25.dp,
+                            bottomStart = 0.dp,
+                            bottomEnd = 0.dp
+                        )
+                    )
+                    .size(90.dp,85.dp)
+                    .background(tooo),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .fillMaxSize(0.8f)
+                                .padding(5.dp),
+                            imageVector = Icons.TwoTone.AddCircle, contentDescription = null
+                        )
+
+                    }
+        }
     }
 }
 
@@ -113,35 +136,18 @@ fun MainClock() {
 fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
     Box(
         modifier = Modifier
+            .size(250.dp, 250.dp)
             .shadow(
                 elevation = 10.dp,
-                shape = RoundedCornerShape(20.dp)
+                shape = CircleShape
             )
             .background(Color.White)
             .aspectRatio(1f),
-     contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center
     ) {
-        Text(text = "Clock",
-            modifier = Modifier
-                .padding(start = 15.dp, top = 10.dp)
-                .align(Alignment.TopStart),
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 25.sp,
-            fontWeight = FontWeight.SemiBold,
-            fontStyle = FontStyle.Normal
-        )
-        Card(modifier = Modifier
-            .padding(10.dp)
-            .align(Alignment.BottomEnd)
-        ) {
-            Icon(imageVector = Icons.Default.Edit,
-                contentDescription = null,
-                modifier = Modifier.padding(10.dp))
-        }
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(25.dp)
         ) {
             val diameter = min(size.width, size.height) * 0.9f
             val radius = diameter / 2
@@ -240,12 +246,14 @@ fun ClockCard(location: String, offsetHours: Int) {
 
     Card(
         modifier = Modifier
-            .padding(top = 20.dp)
-            .shadow(elevation = 10.dp,
-                shape = RoundedCornerShape(20.dp))
+            .padding(top = 20.dp, end = 15.dp)
+            .shadow(
+                elevation = 10.dp,
+                shape = RoundedCornerShape(20.dp)
+            )
             .fillMaxWidth(),
 
-    ) {
+        ) {
         Row(
             modifier = Modifier
                 .padding(start = 20.dp, end = 20.dp)
@@ -253,8 +261,10 @@ fun ClockCard(location: String, offsetHours: Int) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = location, style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
+            Text(
+                text = location, style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(top = 15.dp, bottom = 15.dp)
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = currentTime, style = MaterialTheme.typography.headlineLarge)
         }
@@ -267,3 +277,4 @@ fun ClockCard(location: String, offsetHours: Int) {
 private fun AnalogClockComponentPrev() {
     AnalogClockComponent(hour = 5f, minute = 30f, second = 0f)
 }
+

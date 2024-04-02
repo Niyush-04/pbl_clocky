@@ -6,6 +6,7 @@ import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
 import androidx.compose.animation.graphics.vector.AnimatedImageVector
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,12 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.twotone.AddCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -32,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
@@ -43,15 +50,64 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import itm.pbl.clocky.R
+import itm.pbl.clocky.ui.clock.ClockCard
+import itm.pbl.clocky.ui.clock.MainClock
 import itm.pbl.clocky.ui.theme.from
 import itm.pbl.clocky.ui.theme.tooo
 import itm.pbl.clocky.util.CustomCircularProgressIndicator
+import itm.pbl.clocky.util.CustomTopAppBar
 import itm.pbl.clocky.util.vibrateDevice
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationGraphicsApi::class)
 @Composable
 fun PomodoroScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(top = 5.dp, start = 15.dp, end = 15.dp, bottom = 5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        CustomTopAppBar(title = "Pomodoro")
+        PomodoroElements()
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            Box(
+                modifier = Modifier
+                    .shadow(
+                        elevation = 15.dp,
+                        shape = RoundedCornerShape(
+                            topStart = 25.dp,
+                            topEnd = 25.dp,
+                            bottomStart = 0.dp,
+                            bottomEnd = 0.dp
+                        )
+                    )
+                    .size(90.dp,85.dp)
+                    .background(tooo),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .fillMaxSize(0.8f)
+                        .padding(5.dp),
+                    imageVector = Icons.TwoTone.AddCircle, contentDescription = null
+                )
+
+            }
+        }
+    }
+}
+
+
+
+
+@OptIn(ExperimentalAnimationGraphicsApi::class)
+@Composable
+fun PomodoroElements() {
     val context = LocalContext.current
     val currentView = LocalView.current
 
@@ -123,23 +179,6 @@ fun PomodoroScreen() {
 
     val calcProgress = ((timeLeft.toFloat() / totalTime.toFloat()) * 100f)
 
-    TopAppBar(
-        modifier = Modifier.fillMaxWidth(),
-        title = {
-            Row(
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    textAlign = TextAlign.Center,
-                    text = "Pomodoro",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-        },
-
-        )
-
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -152,7 +191,6 @@ fun PomodoroScreen() {
                 .fillMaxSize(0.5f),
             contentAlignment = Alignment.Center
         ) {
-//            CustomCircularProgressIndicator(progressBarAnim.value)
             CustomCircularProgressIndicator(initialValue = if (progressBarAnim.value != 1f) progressBarAnim.value else 100f - calcProgress)
             Column(
                 verticalArrangement = Arrangement.Center,
