@@ -18,7 +18,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -31,10 +30,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import itm.pbl.clocky.ui.ClockyNavigationGraph
-import itm.pbl.clocky.ui.Screens
+import dagger.hilt.android.AndroidEntryPoint
+import itm.pbl.clocky.presentation.ClockyNavigationGraph
+import itm.pbl.clocky.presentation.Screens
 import itm.pbl.clocky.ui.theme.ClockyTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

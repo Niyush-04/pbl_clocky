@@ -1,4 +1,4 @@
-package itm.pbl.clocky.ui.pomodoro
+package itm.pbl.clocky.presentation.pomodoro
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -50,8 +50,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import itm.pbl.clocky.R
-import itm.pbl.clocky.ui.clock.ClockCard
-import itm.pbl.clocky.ui.clock.MainClock
+import itm.pbl.clocky.presentation.clock.ClockCard
+import itm.pbl.clocky.presentation.clock.MainClock
 import itm.pbl.clocky.ui.theme.from
 import itm.pbl.clocky.ui.theme.tooo
 import itm.pbl.clocky.util.CustomCircularProgressIndicator

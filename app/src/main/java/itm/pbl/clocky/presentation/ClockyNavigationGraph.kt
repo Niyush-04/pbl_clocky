@@ -1,13 +1,14 @@
-package itm.pbl.clocky.ui
+package itm.pbl.clocky.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import itm.pbl.clocky.R
-import itm.pbl.clocky.ui.alarm.AlarmScreen
-import itm.pbl.clocky.ui.clock.ClockScreen
-import itm.pbl.clocky.ui.pomodoro.PomodoroScreen
+import itm.pbl.clocky.presentation.alarm.AlarmScreen
+import itm.pbl.clocky.presentation.alarm.CreateAlarmScreen
+import itm.pbl.clocky.presentation.clock.ClockScreen
+import itm.pbl.clocky.presentation.pomodoro.PomodoroScreen
 
 @Composable
 fun ClockyNavigationGraph(
@@ -20,14 +21,19 @@ fun ClockyNavigationGraph(
         startDestination = startDestination,
     )
     {
-        composable(Routes.CLOCK_SCREEN) {
+        composable(route = Routes.CLOCK_SCREEN) {
             ClockScreen()
         }
-        composable(Routes.ALARM_SCREEN) {
-            AlarmScreen()
+        composable(route = Routes.ALARM_SCREEN) {
+            AlarmScreen(
+                navigateToCreateAlarm = { navHostController.navigate(Routes.CREATE_ALARM_SCREEN)}
+            )
         }
-        composable(Routes.POMODORO_SCREEN) {
+        composable(route = Routes.POMODORO_SCREEN) {
             PomodoroScreen()
+        }
+        composable(route = Routes.CREATE_ALARM_SCREEN) {
+            CreateAlarmScreen()
         }
     }
 }

@@ -1,4 +1,4 @@
-package itm.pbl.clocky.ui.clock
+package itm.pbl.clocky.presentation.clock
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
