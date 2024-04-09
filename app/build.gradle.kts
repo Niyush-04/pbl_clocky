@@ -83,4 +83,7 @@ dependencies {
     // Room
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
+
+    // materiel-icon
+    implementation(libs.androidx.material.icons.extended)
 }

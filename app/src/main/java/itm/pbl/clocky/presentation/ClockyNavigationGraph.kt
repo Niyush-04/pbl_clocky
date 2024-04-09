@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import itm.pbl.clocky.R
 import itm.pbl.clocky.presentation.alarm.AlarmScreen
 import itm.pbl.clocky.presentation.alarm.CreateAlarmScreen
 import itm.pbl.clocky.presentation.clock.ClockScreen
@@ -38,21 +37,21 @@ fun ClockyNavigationGraph(
     }
 }
 
-sealed class Screens(val route: String, val icon: Int) {
+sealed class Screens(val route: String, val title: String ) {
 
     data object Alarm : Screens(
         route = Routes.ALARM_SCREEN,
-        icon = R.drawable.avd_clock_alarm
+        title = "Alarm"
     )
 
     data object Clock : Screens(
         route = Routes.CLOCK_SCREEN,
-        icon = R.drawable.avd_clock_clock
+        title = "Clock"
     )
 
     data object Pomodoro : Screens(
         route = Routes.POMODORO_SCREEN,
-        icon = R.drawable.avd_clock_stopwatch
+        title = "Pomodoro"
     )
 
 }
