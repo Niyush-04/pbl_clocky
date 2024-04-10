@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import itm.pbl.clocky.R
 import itm.pbl.clocky.data.clock.Card
-import itm.pbl.clocky.ui.theme.tooo
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -127,7 +126,7 @@ fun CardItem(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(25.dp))
-                .background(color = tooo)
+                .background(color = MaterialTheme.colorScheme.primaryContainer)
                 .width(250.dp)
                 .height(200.dp)
                 .clickable { }
@@ -138,7 +137,7 @@ fun CardItem(
             Column(modifier = Modifier.fillMaxSize()) {
                 Text(
                     text = "${card.location}, ${card.country}",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = 25.sp,
                     fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight.SemiBold
@@ -146,7 +145,7 @@ fun CardItem(
 
                 Text(
                     text = "+3 HRS | GMT",
-                    color = Color.White.copy(alpha = 0.8f),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
                     fontSize = 18.sp,
                     fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight.Light
@@ -163,14 +162,14 @@ fun CardItem(
                         modifier = Modifier.fillMaxHeight(0.5f),
                         alignment = Alignment.BottomStart,
                         painter = painterResource(id = card.icon),
-                        colorFilter = ColorFilter.tint(Color.White.copy(alpha = 0.5f)),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f)),
                         contentScale = ContentScale.Crop,
                         contentDescription = null
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         text = currentTime,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontSize = 40.sp,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold
@@ -178,7 +177,7 @@ fun CardItem(
                     Text(
                         modifier = Modifier.rotate(-90f),
                         text = "PM",
-                        color = Color.White.copy(alpha = 0.8f),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontSize = 20.sp,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold

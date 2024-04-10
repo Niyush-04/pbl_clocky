@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,17 +25,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.unit.dp
-import itm.pbl.clocky.ui.theme.from
-import itm.pbl.clocky.ui.theme.tooo
 import kotlinx.coroutines.delay
 import java.time.LocalTime
 import kotlin.math.min
-
 
 
 @Composable
@@ -43,7 +40,7 @@ fun ClockScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = from),
+            .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -55,6 +52,9 @@ fun ClockScreen() {
 
     @Composable
 fun MainClock() {
+
+
+
     var currentHour by remember { mutableIntStateOf(0) }
     var currentMinute by remember { mutableIntStateOf(0) }
     var currentSecond by remember { mutableIntStateOf(0) }
@@ -86,6 +86,11 @@ fun MainClock() {
 
 @Composable
 fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
+
+    val primary = MaterialTheme.colorScheme.primary
+    val invPrimary = MaterialTheme.colorScheme.inversePrimary
+    val onPrimary = MaterialTheme.colorScheme.onPrimary
+
     Box(
         modifier = Modifier
             .size(250.dp, 250.dp)
@@ -93,7 +98,7 @@ fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
                 elevation = 10.dp,
                 shape = CircleShape
             )
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .aspectRatio(1f),
         contentAlignment = Alignment.Center
     ) {
@@ -122,9 +127,9 @@ fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
                 rotate(-90f, center) {
                     drawArc(
                         brush = Brush.sweepGradient(
-                            0f to from,
-                            0.25f to tooo,
-                            1f to tooo
+                            0f to invPrimary,
+                            0.25f to primary,
+                            1f to primary
                         ),
                         startAngle = 0f,
                         sweepAngle = 360f,
@@ -143,12 +148,12 @@ fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
                         )
                     )
                     drawCircle(
-                        color = tooo,
+                        color = primary,
                         radius = circleThickness / 2,
                         center = dialOffset
                     )
                     drawCircle(
-                        color = Color.White.copy(1f),
+                        color = onPrimary,
                         radius = circleThickness / 3,
                         center = dialOffset
                     )
@@ -157,7 +162,7 @@ fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
 
             rotate(houRation * 360, center) {
                 drawLine(
-                    color = from,
+                    color = invPrimary,
                     start = center - Offset(0f, radius * 0.6f),
                     end = center + Offset(0f, radius * 0.1f),
                     strokeWidth = 10.dp.toPx(),
@@ -166,7 +171,7 @@ fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
             }
             rotate(minuteRation * 360, center) {
                 drawLine(
-                    color = tooo,
+                    color = primary,
                     start = center - Offset(0f, radius * 0.8f),
                     end = center + Offset(0f, radius * 0.1f),
                     strokeWidth = 8.dp.toPx(),
@@ -174,7 +179,7 @@ fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
                 )
             }
             drawCircle(
-                color = Color.LightGray.copy(1f),
+                color = onPrimary,
                 radius = 2.dp.toPx(),
                 center = center
             )

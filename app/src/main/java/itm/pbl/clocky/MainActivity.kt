@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -33,7 +33,6 @@ import itm.pbl.clocky.presentation.ClockyNavigationGraph
 import itm.pbl.clocky.presentation.Routes
 import itm.pbl.clocky.presentation.Screens
 import itm.pbl.clocky.ui.theme.ClockyTheme
-import itm.pbl.clocky.ui.theme.from
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -41,7 +40,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            window.statusBarColor = getColor(R.color.mainColor)
             ClockyTheme {
                 ClockyApp()
             }
@@ -56,7 +54,8 @@ fun ClockyApp() {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = from,
+//        containerColor = MaterialTheme.colorScheme.
+//        ,
         topBar = { BottomBar(navController = navController)},
     ) {
         Column(modifier = Modifier
@@ -116,7 +115,7 @@ fun AddItem(
                 },
             style = TextStyle(
                 fontSize = 25.sp,
-                color = if (selected) Color.White else Color.White.copy(alpha = 0.5f),
+                color = if (selected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
                 fontWeight = FontWeight.Medium,
                 fontFamily = FontFamily.SansSerif
             ),

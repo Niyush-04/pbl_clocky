@@ -3,6 +3,7 @@ package itm.pbl.clocky.presentation.clock
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,7 +13,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import itm.pbl.clocky.ui.theme.tooo
 
 @Composable
 fun TimeInText() {
@@ -22,7 +22,7 @@ fun TimeInText() {
             letterSpacing = 3.sp,
             style = TextStyle(
                 fontSize = 35.sp,
-                color = tooo.copy(alpha = 1f),
+                color = MaterialTheme.colorScheme.onBackground,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.ExtraLight
             ),
