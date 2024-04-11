@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,110 +34,116 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import itm.pbl.clocky.R
-import itm.pbl.clocky.data.clock.Card
+import itm.pbl.clocky.data.clock.cards
 import kotlinx.coroutines.delay
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
+import java.time.LocalTime
 
 
-val cards = listOf(
-
-    Card(
-        location = "Mumbai",
-        offsetHours = 5,
-        offsetMinutes = 30,
-        country = "India",
-        icon = R.drawable.mumbai_icon
-    ),
-    Card(
-        location = "Paris",
-        offsetHours = +2,
-        offsetMinutes = 0,
-        country = "France",
-        icon = R.drawable.paris_icon
-    ),
-    Card(
-        location = "Tokyo",
-        offsetHours = +9,
-        offsetMinutes = 0,
-        country = "Japan",
-        icon = R.drawable.tokyo_icon
-    ),
-    Card(
-        location = "Sydney",
-        offsetHours = +10,
-        offsetMinutes = 0,
-        country = "Australia",
-        icon = R.drawable.sydney_icon
-    ),
-    Card(
-        location = "New York",
-        offsetHours = -4,
-        offsetMinutes = 0,
-        country = "USA",
-        icon = R.drawable.ny_icon
-    )
-)
-
-@Preview
 @Composable
 fun CardSection() {
-    LazyRow {
-        items(cards.size) { index ->
-            CardItem(index)
-        }
-    }
-}
 
-@Composable
-fun CardItem(
-    index: Int
-) {
-    val card = cards[index]
+    var currentSecond by remember { mutableIntStateOf(0) }
 
-    var currentTime by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         while (true) {
-            val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-            sdf.timeZone = TimeZone.getTimeZone("GMT")
-
-            val offsetMillis = (card.offsetHours * 3600 * 1000) + (card.offsetMinutes * 60 * 1000)
-            val time = Date(System.currentTimeMillis() + offsetMillis)
-
-            currentTime = sdf.format(time)
+            val currentTime = LocalTime.now()
+            currentSecond = currentTime.second
             delay(1000)
         }
     }
 
-    var lastItemPaddingEnd = 0.dp
-    if (index == cards.size - 1) {
-        lastItemPaddingEnd = 16.dp
+    Time.second = currentSecond
+
+    LazyRow {
+        items(cards.size) { index ->
+            CardItem(index) { updateHour, updateMinute ->
+                Time.hour = updateHour
+                Time.minute = updateMinute
+            }
+        }
     }
+}
+
+
+@Composable
+fun CardItem(
+    index: Int,
+    onTimeUpdate: (Int,Int) -> Unit
+) {
+    val card = cards[index]
+
+    var currentHour by remember { mutableIntStateOf(0) }
+    var currentMinute by remember { mutableIntStateOf(0) }
+    var currentSecond by remember { mutableIntStateOf(0) }
+    var amOrPm by remember { mutableStateOf("AM") }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            val currentTime = LocalTime.now()
+            currentHour = currentTime.hour
+            currentMinute = currentTime.minute
+            currentSecond = currentTime.second
+            delay(1000)
+        }
+    }
+    var hour = currentHour + card.offsetHours
+    var minute = currentMinute + card.offsetMinutes
+
+    var currentHour1 by remember { mutableIntStateOf(0) }
+    var currentMinute1 by remember { mutableIntStateOf(0) }
+
+    //minute
+    if (minute >= 60) {
+        hour += minute / 60
+        minute %= 60
+    } else if (minute < 0) {
+        hour += (minute - 59) / 60
+        minute = 60 + (minute % 60)
+    }
+    //hour
+
+    if (hour >= 24) {
+        hour %= 24
+    } else if (hour < 0) {
+        hour = 24 + (hour % 24)
+    }
+
+    val displayHour = if (hour == 0 || hour == 12) 12 else hour % 12
+
+    amOrPm = if (hour >= 12) "PM" else "AM"
+
+    currentHour1 = displayHour
+    currentMinute1 = minute
 
     Box(
         modifier = Modifier
-            .padding(start = 16.dp, end = lastItemPaddingEnd, bottom = 16.dp, top = 16.dp)
+            .padding(
+                start = 16.dp,
+                end = if (index == cards.size - 1) 16.dp else 0.dp,
+                bottom = 16.dp,
+                top = 16.dp
+            )
     ) {
+
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(25.dp))
                 .background(color = MaterialTheme.colorScheme.primaryContainer)
                 .width(250.dp)
                 .height(200.dp)
-                .clickable { }
+                .clickable {
+                    onTimeUpdate(currentHour1, currentMinute1)
+                }
                 .padding(top = 20.dp, bottom = 30.dp, start = 16.dp, end = 16.dp)
 
         ) {
 
+
             Column(modifier = Modifier.fillMaxSize()) {
                 Text(
-                    text = "${card.location}, ${card.country}",
+                    text = card.location,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = 25.sp,
                     fontFamily = FontFamily.SansSerif,
@@ -144,16 +151,17 @@ fun CardItem(
                 )
 
                 Text(
-                    text = "+3 HRS | GMT",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
+                    text = "${card.gmt} HRS | GMT",
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
                     fontSize = 18.sp,
                     fontFamily = FontFamily.SansSerif,
                     fontWeight = FontWeight.Light
                 )
-                
+
                 Spacer(modifier = Modifier.weight(1f))
-                
-                Row(modifier = Modifier.fillMaxWidth(),
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -162,13 +170,18 @@ fun CardItem(
                         modifier = Modifier.fillMaxHeight(0.5f),
                         alignment = Alignment.BottomStart,
                         painter = painterResource(id = card.icon),
-                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f)),
+                        colorFilter = ColorFilter.tint(
+                            MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                                alpha = 0.5f
+                            )
+                        ),
                         contentScale = ContentScale.Crop,
                         contentDescription = null
                     )
+
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = currentTime,
+                        text = "${currentHour1}:${currentMinute1}",
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontSize = 40.sp,
                         fontFamily = FontFamily.SansSerif,
@@ -176,8 +189,8 @@ fun CardItem(
                     )
                     Text(
                         modifier = Modifier.rotate(-90f),
-                        text = "PM",
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        text = amOrPm,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
                         fontSize = 20.sp,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.SemiBold

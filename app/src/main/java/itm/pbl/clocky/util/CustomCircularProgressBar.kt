@@ -3,8 +3,6 @@ package itm.pbl.clocky.util
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,17 +11,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import itm.pbl.clocky.ui.theme.from
-import itm.pbl.clocky.ui.theme.tooo
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -31,8 +25,8 @@ import kotlin.math.sin
 @Composable
 fun CustomCircularProgressIndicator(
     initialValue: Float,
-    primaryColor: Color = from,
-    secondaryColor: Color = tooo,
+    primaryColor: Color = Color.Gray,
+    secondaryColor: Color = Color.Green,
     minValue: Int = 0,
     maxValue: Int = 100,
     circleRadius: Float = 300f,

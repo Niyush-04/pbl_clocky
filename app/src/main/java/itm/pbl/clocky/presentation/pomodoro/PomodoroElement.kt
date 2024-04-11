@@ -36,7 +36,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import itm.pbl.clocky.ui.theme.from
 import itm.pbl.clocky.util.CustomCircularProgressIndicator
 import itm.pbl.clocky.util.vibrateDevice
 import kotlinx.coroutines.delay
@@ -156,7 +155,7 @@ fun PomodoroElements() {
                     state.value = !state.value
                 },
                 shape = CircleShape,
-                containerColor = from,
+                containerColor = Color.DarkGray,
             ) {
                 Icon(
                     imageVector = if(isPaused) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
@@ -170,7 +169,7 @@ fun PomodoroElements() {
                     state.value = !state.value
                 },
                 shape = CircleShape,
-                containerColor = from,
+                containerColor = Color.Red,
             ) {
                 Icon(
                     imageVector = Icons.Rounded.RestartAlt,
