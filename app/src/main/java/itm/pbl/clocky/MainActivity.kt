@@ -3,6 +3,7 @@ package itm.pbl.clocky
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
@@ -48,14 +51,13 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@Preview(showBackground = true)
 @Composable
 fun ClockyApp() {
     val navController = rememberNavController()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-//        containerColor = MaterialTheme.colorScheme.
-//        ,
         topBar = { BottomBar(navController = navController)},
     ) {
         Column(modifier = Modifier
@@ -79,8 +81,9 @@ fun BottomBar(navController: NavHostController) {
 
     Row(
         modifier = Modifier
-            .padding(top = 30.dp, bottom = 40.dp)
-            .fillMaxWidth(),
+            .padding(top = 30.dp, bottom = 30.dp)
+            .fillMaxWidth()
+            ,
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ){

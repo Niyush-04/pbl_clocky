@@ -2,13 +2,19 @@ package itm.pbl.clocky.util
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -16,32 +22,37 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
+
 @Composable
 fun CustomCircularProgressIndicator(
     initialValue: Float,
-    primaryColor: Color = Color.Gray,
-    secondaryColor: Color = Color.Green,
+    primaryColor: Color = MaterialTheme.colorScheme.primary,
+    secondaryColor: Color = MaterialTheme.colorScheme.inversePrimary,
     minValue: Int = 0,
     maxValue: Int = 100,
     circleRadius: Float = 300f,
+    timerText: String,
 ) {
-    var circleCenter by remember {
-        mutableStateOf(Offset.Zero)
-    }
+    var circleCenter by remember { mutableStateOf(Offset.Zero) }
 
-    Box {
+    Box(modifier = Modifier
+        .padding(20.dp)) {
         Canvas(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .size(250.dp,250.dp)
         ) {
             val width = size.width
             val height = size.height
-            val circleThickness = width / 25f
+            val circleThickness = width / 15f
             circleCenter = Offset(width / 2f, height / 2f)
 
             drawCircle(
@@ -102,15 +113,23 @@ fun CustomCircularProgressIndicator(
                 }
             }
         }
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = timerText,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            fontSize = 40.sp,
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun CustomCircularProgressIndicatorPrev() {
     CustomCircularProgressIndicator(
-        initialValue = 75f, circleRadius = 300f
+        initialValue = 75f, circleRadius = 300f, timerText = "Hello"
     )
 }

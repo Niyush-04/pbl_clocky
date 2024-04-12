@@ -2,20 +2,19 @@ package itm.pbl.clocky.presentation.pomodoro
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.RestartAlt
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,17 +28,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import itm.pbl.clocky.util.CustomCircularProgressIndicator
 import itm.pbl.clocky.util.vibrateDevice
 import kotlinx.coroutines.delay
 
+
+@Preview(showBackground = true)
 @Composable
 fun PomodoroElements() {
     val context = LocalContext.current
@@ -107,38 +108,30 @@ fun PomodoroElements() {
     val calcProgress = ((timeLeft.toFloat() / totalTime.toFloat()) * 100f)
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 30.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Box(
-            modifier = Modifier
-                .aspectRatio(1f)
-                .fillMaxSize(0.5f),
-            contentAlignment = Alignment.Center
-        ) {
-            CustomCircularProgressIndicator(initialValue = if (progressBarAnim.value != 1f) progressBarAnim.value else 100f - calcProgress)
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = if (isTimeCompleted) "Completed" else "${timeLeft / 60}:${timeLeft % 60}",
-                    fontFamily = FontFamily.SansSerif,
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
-            }
-        }
-        Text(
-            text = if (timeLeft > totalTime - 0.5 * 60) "Focus" else "Enjoy",
-            fontFamily = FontFamily.SansSerif,
-            fontSize = 30.sp,
-            color = Color.Black
+        CustomCircularProgressIndicator(
+            timerText = if (isTimeCompleted) "Completed" else "${timeLeft / 60}:${timeLeft % 60}",
+            initialValue = if (progressBarAnim.value != 1f) progressBarAnim.value else 100f - calcProgress
         )
-        Spacer(modifier = Modifier.height(10.dp))
+
+        Box(modifier = Modifier
+            .fillMaxWidth(0.4f)
+            .padding(horizontal = 10.dp, vertical = 20.dp)
+            .background(MaterialTheme.colorScheme.inversePrimary, shape = RoundedCornerShape(6.dp)),
+            contentAlignment = Alignment.Center){
+            Text(
+                text = if (timeLeft > totalTime - 0.5 * 60) "Focus" else "Enjoy",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 25.sp,
+                fontFamily = FontFamily.SansSerif,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -154,12 +147,11 @@ fun PomodoroElements() {
                     isReset = false
                     state.value = !state.value
                 },
-                shape = CircleShape,
-                containerColor = Color.DarkGray,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
             ) {
                 Icon(
-                    imageVector = if(isPaused) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    imageVector = if (isPaused) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     contentDescription = null
                 )
             }
@@ -168,12 +160,11 @@ fun PomodoroElements() {
                     isReset = true
                     state.value = !state.value
                 },
-                shape = CircleShape,
-                containerColor = Color.Red,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.RestartAlt,
-                    tint = MaterialTheme.colorScheme.onPrimary,
+                    imageVector = Icons.Rounded.Refresh,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     contentDescription = null
                 )
             }
