@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -44,11 +43,15 @@ import java.time.LocalTime
 @Composable
 fun CardSection() {
 
+    var currentHour by remember { mutableIntStateOf(0) }
+    var currentMinute by remember { mutableIntStateOf(0) }
     var currentSecond by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
         while (true) {
             val currentTime = LocalTime.now()
+            currentHour = currentTime.hour
+            currentMinute = currentTime.minute
             currentSecond = currentTime.second
             delay(1000)
         }
@@ -56,9 +59,15 @@ fun CardSection() {
 
     Time.second = currentSecond
 
+    LaunchedEffect(Unit) {
+        Time.hour = currentHour
+        Time.minute = currentMinute
+    }
+
     LazyRow {
         items(cards.size) { index ->
-            CardItem(index) { updateHour, updateMinute ->
+            CardItem(index, currentHour,currentMinute) {
+                updateHour, updateMinute ->
                 Time.hour = updateHour
                 Time.minute = updateMinute
             }
@@ -70,24 +79,12 @@ fun CardSection() {
 @Composable
 fun CardItem(
     index: Int,
-    onTimeUpdate: (Int,Int) -> Unit
+    currentHour: Int,
+    currentMinute: Int,
+    onTimeUpdate: (Int, Int) -> Unit
 ) {
     val card = cards[index]
 
-    var currentHour by remember { mutableIntStateOf(0) }
-    var currentMinute by remember { mutableIntStateOf(0) }
-    var currentSecond by remember { mutableIntStateOf(0) }
-    var amOrPm by remember { mutableStateOf("AM") }
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            val currentTime = LocalTime.now()
-            currentHour = currentTime.hour
-            currentMinute = currentTime.minute
-            currentSecond = currentTime.second
-            delay(1000)
-        }
-    }
     var hour = currentHour + card.offsetHours
     var minute = currentMinute + card.offsetMinutes
 
@@ -111,8 +108,6 @@ fun CardItem(
     }
 
     val displayHour = if (hour == 0 || hour == 12) 12 else hour % 12
-
-    amOrPm = if (hour >= 12) "PM" else "AM"
 
     currentHour1 = displayHour
     currentMinute1 = minute
@@ -139,7 +134,6 @@ fun CardItem(
                 .padding(top = 20.dp, bottom = 30.dp, start = 16.dp, end = 16.dp)
 
         ) {
-
 
             Column(modifier = Modifier.fillMaxSize()) {
                 Text(
@@ -180,8 +174,9 @@ fun CardItem(
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
+
                     Text(
-                        text = "${currentHour1}:${currentMinute1}",
+                        text = "%02d:%02d".format(currentHour1,currentMinute1),
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontSize = 40.sp,
                         fontFamily = FontFamily.SansSerif,
@@ -189,7 +184,7 @@ fun CardItem(
                     )
                     Text(
                         modifier = Modifier.rotate(-90f),
-                        text = amOrPm,
+                        text = "AM",
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
                         fontSize = 20.sp,
                         fontFamily = FontFamily.SansSerif,
