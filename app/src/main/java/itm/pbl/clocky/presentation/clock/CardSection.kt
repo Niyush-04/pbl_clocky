@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -90,6 +91,7 @@ fun CardItem(
 
     var currentHour1 by remember { mutableIntStateOf(0) }
     var currentMinute1 by remember { mutableIntStateOf(0) }
+    var amOrPm by remember { mutableStateOf("")}
 
     //minute
     if (minute >= 60) {
@@ -107,6 +109,7 @@ fun CardItem(
         hour = 24 + (hour % 24)
     }
 
+    amOrPm = if (hour>12) "PM" else "AM"
     val displayHour = if (hour == 0 || hour == 12) 12 else hour % 12
 
     currentHour1 = displayHour
@@ -184,7 +187,7 @@ fun CardItem(
                     )
                     Text(
                         modifier = Modifier.rotate(-90f),
-                        text = "AM",
+                        text = amOrPm,
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
                         fontSize = 20.sp,
                         fontFamily = FontFamily.SansSerif,

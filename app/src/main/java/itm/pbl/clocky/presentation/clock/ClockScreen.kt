@@ -23,7 +23,12 @@ fun ClockScreen() {
     ) {
         MainClock(currentHour = Time.hour, currentMinute = Time.minute, currentSecond = Time.second)
 //        test()
-        TimeInText(hour = Time.hour, minute = Time.minute)
+
+        /* Format of timing is 24hrs
+        Workaround for now
+         */
+
+        TimeInText(hour = Time.hour%12, minute = Time.minute)
 
         CardSection()
     }
