@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -71,11 +71,13 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = { BottomBar(navController = navController)},
+                    topBar = { BottomBar(navController = navController) },
                 ) {
-                    Surface(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(it)) {
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(it)
+                    ) {
 
                         val state by viewModel.state.collectAsState()
 
@@ -93,7 +95,6 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
@@ -108,11 +109,10 @@ fun BottomBar(navController: NavHostController) {
     Row(
         modifier = Modifier
             .padding(top = 30.dp, bottom = 30.dp)
-            .fillMaxWidth()
-            ,
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         screens.forEach { Screens ->
             AddItem(
                 screen = Screens,
@@ -131,24 +131,26 @@ fun AddItem(
 ) {
     val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top) {
-        Text(
-            modifier = Modifier
-                .clickable {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
+    ) {
+        TextButton(onClick = {
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
+        }) {
+            Text(
+                style = TextStyle(
+                    fontSize = 25.sp,
+                    color = if (selected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = FontFamily.SansSerif
+                ),
+                text = screen.title
+            )
+        }
 
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id)
-                        launchSingleTop = true
-                    }
-                },
-            style = TextStyle(
-                fontSize = 25.sp,
-                color = if (selected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                fontWeight = FontWeight.Medium,
-                fontFamily = FontFamily.SansSerif
-            ),
-            text = screen.title
-        )
     }
 }
