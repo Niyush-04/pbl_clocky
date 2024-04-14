@@ -138,14 +138,10 @@ fun PomodoroElements() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Absolute.SpaceEvenly
         ) {
-            val state = remember {
-                mutableStateOf(false)
-            }
             FloatingActionButton(
                 onClick = {
                     isPaused = !isPaused
                     isReset = false
-                    state.value = !state.value
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
             ) {
@@ -158,7 +154,6 @@ fun PomodoroElements() {
             FloatingActionButton(
                 onClick = {
                     isReset = true
-                    state.value = !state.value
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
             ) {
