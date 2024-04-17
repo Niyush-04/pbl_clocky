@@ -1,5 +1,6 @@
 package itm.pbl.clocky.presentation.pomodoro
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -112,7 +113,7 @@ TODO: will fix it later
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(top = 0.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
                     text = buildAnnotatedString {
                         append("➜ 30min = 25min focus + 5min break\n")
                         append("➜ 60min = 50min focus + 10min break")
@@ -134,14 +135,15 @@ TODO: will fix it later
                 )
             }
         }
+        AnimatedVisibility(visible = uiState.isPaused,
+            )
 
-        if (uiState.isPaused) {
+        {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
             ) {
-
                 Button(
                     onClick = { pomodoroViewModel.startTimer(30) },
                     shape = RoundedCornerShape(16.dp),
@@ -167,8 +169,7 @@ TODO: will fix it later
                 }
             }
         }
-
-        if (!uiState.isPaused) {
+        AnimatedVisibility(visible = !uiState.isPaused){
             Button(
                 onClick = { pomodoroViewModel.resetTimer() },
                 shape = RoundedCornerShape(16.dp),
