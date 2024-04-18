@@ -1,4 +1,4 @@
-package itm.pbl.clocky.ui.screens
+package itm.pbl.clocky.ui
 
 object Routes {
     const val ALARM_SCREEN = "ALARM_SCREEN"

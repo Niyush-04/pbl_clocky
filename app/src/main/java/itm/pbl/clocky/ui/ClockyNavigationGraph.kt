@@ -1,10 +1,14 @@
-package itm.pbl.clocky.ui.screens
+package itm.pbl.clocky.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import itm.pbl.clocky.R
+import itm.pbl.clocky.ui.alarm.AlarmScreen
+import itm.pbl.clocky.ui.clock.ClockScreen
+import itm.pbl.clocky.ui.pomodoro.PomodoroScreen
+import itm.pbl.clocky.ui.timer.TimerScreen
 
 @Composable
 fun ClockyNavigationGraph(
@@ -14,7 +18,8 @@ fun ClockyNavigationGraph(
 
     NavHost(navController = navHostController,
         startDestination = startDestination,
-        builder = {
+    )
+        {
             composable(Routes.CLOCK_SCREEN) {
                 ClockScreen()
             }
@@ -27,7 +32,7 @@ fun ClockyNavigationGraph(
             composable(Routes.TIMER_SCREEN) {
                 TimerScreen()
             }
-        })
+        }
 }
 
 sealed class Screens(val route: String, val label: String, val icon:Int) {
