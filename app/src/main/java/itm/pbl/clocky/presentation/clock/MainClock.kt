@@ -1,5 +1,6 @@
 package itm.pbl.clocky.presentation.clock
 
+import androidx.annotation.Keep
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -44,7 +45,6 @@ fun MainClock(currentHour: Int, currentMinute: Int, currentSecond: Int) {
     AnalogClockComponent(hour = hourRotation, minute = minuteRotation, second = secondRotation)
 }
 
-@Preview(showBackground = true)
 @Composable
 fun AnalogClockComponent(hour: Float, minute: Float, second: Float) {
 
