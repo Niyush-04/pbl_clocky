@@ -7,16 +7,17 @@ import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
 import androidx.compose.animation.graphics.res.animatedVectorResource
 import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
 import androidx.compose.animation.graphics.vector.AnimatedImageVector
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -29,11 +30,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import itm.pbl.clocky.ui.ClockyNavigationGraph
-import itm.pbl.clocky.ui.Screens
-import itm.pbl.clocky.ui.Screens.Alarm.route
+import dagger.hilt.android.AndroidEntryPoint
+import itm.pbl.clocky.presentation.ClockyNavigationGraph
+import itm.pbl.clocky.presentation.Screens
 import itm.pbl.clocky.ui.theme.ClockyTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +67,7 @@ fun ClockyApp() {
             }
         ) {
             it
-            ClockyNavigationGraph(navController, route)
+            ClockyNavigationGraph(navController, Screens.Clock.route)
         }
     }
 }
@@ -79,14 +81,15 @@ fun BottomNav(navController: NavHostController) {
     val list = listOf(
         Screens.Clock,
         Screens.Alarm,
-        Screens.Pomodoro,
-        Screens.Timer
+        Screens.Pomodoro
     )
     NavigationBar(
         modifier = Modifier
-            .padding(15.dp)
-            .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
-            .clip(RoundedCornerShape(20.dp))
+            .fillMaxWidth(0.7f)
+            .height(100.dp)
+            .padding(start = 30.dp, bottom = 25.dp, end = 15.dp, top = 15.dp)
+            .shadow(elevation = 5.dp, shape = RoundedCornerShape(100.dp))
+            .clip(RoundedCornerShape(100.dp))
     ) {
         list.forEachIndexed { index, screens ->
             val state = remember { mutableStateOf(false) }
@@ -101,14 +104,13 @@ fun BottomNav(navController: NavHostController) {
                     selectedIndex = index
                     state.value = !state.value
                 },
-                icon = {
-                    Image(
-                        painter = painter, contentDescription = null
+                {
+                    Icon(
+                        painter = painter,
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = null
                     )
                 },
-                label = {
-                    Text(text = screens.label)
-                }
             )
         }
     }
