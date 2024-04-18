@@ -42,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
     packaging {
         resources {
@@ -73,14 +73,14 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
-    // Animated Icon
-    implementation(libs.androidx.animation.graphics)
-
     // Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    kapt(libs.hilt.android.compiler)
 
     // Room
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
+
+    // materiel-icon
+    implementation(libs.androidx.material.icons.extended)
 }
