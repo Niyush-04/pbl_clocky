@@ -1,4 +1,4 @@
-package itm.pbl.clocky.presentation
+package itm.pbl.clocky.navigation
 
 object Routes {
     const val ALARM_SCREEN = "ALARM_SCREEN"

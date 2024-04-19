@@ -36,9 +36,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import dagger.hilt.android.AndroidEntryPoint
 import itm.pbl.clocky.data.AlarmDatabase
-import itm.pbl.clocky.presentation.ClockyNavigationGraph
-import itm.pbl.clocky.presentation.Routes
-import itm.pbl.clocky.presentation.Screens
+import itm.pbl.clocky.navigation.ClockyNavigationGraph
+import itm.pbl.clocky.navigation.Routes
+import itm.pbl.clocky.navigation.Screens
 import itm.pbl.clocky.presentation.alarm.AlarmViewModel
 import itm.pbl.clocky.ui.theme.ClockyTheme
 

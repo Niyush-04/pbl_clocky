@@ -1,4 +1,4 @@
-package itm.pbl.clocky.presentation
+package itm.pbl.clocky.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
