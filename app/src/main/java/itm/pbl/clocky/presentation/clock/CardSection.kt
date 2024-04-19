@@ -1,6 +1,5 @@
 package itm.pbl.clocky.presentation.clock
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,8 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -123,23 +120,17 @@ fun CardItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    Image(
-                        modifier = Modifier.fillMaxHeight(0.5f),
-                        alignment = Alignment.BottomStart,
+                    Icon(
                         painter = painterResource(id = card.icon),
-                        colorFilter = ColorFilter.tint(
-                            MaterialTheme.colorScheme.onPrimaryContainer.copy(
-                                alpha = 0.5f
-                            )
-                        ),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null
+                        contentDescription = "location Icon",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f)
+
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
 
                     Text(
-                        text = "%02d:%02d".format(hour, minute),
+                        text = "%02d:%02d".format(if (hour == 0 || hour == 12) 12 else hour % 12, minute),
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         fontSize = 40.sp,
                         fontFamily = FontFamily.SansSerif,
