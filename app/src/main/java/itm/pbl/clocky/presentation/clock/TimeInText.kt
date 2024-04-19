@@ -42,20 +42,19 @@ fun numToWord(hour: Int, minute: Int): String {
         "half past", "twenty-five to", "twenty to", "quarter to", "ten to", "five to"
     )
 
-    return when {
-        minute in 0..4 -> "${hours[hour]} ${minutes[0]}"
-        minute in 5..9 -> "${minutes[1]} ${hours[hour]}"
-        minute in 10 .. 14 -> "${minutes[2]} ${hours[hour]}"
-        minute in 15 .. 19 -> "${minutes[3]} ${hours[hour]}"
-        minute in 20 .. 24 -> "${minutes[4]} ${hours[hour]}"
-        minute in 25 .. 29 -> "${minutes[5]} ${hours[hour]}"
-        minute in 30 .. 34 -> "${minutes[6]} ${hours[hour]}"
-
-        minute in 35 .. 39 -> "${minutes[7]} ${hours[if(hour==12) 1 else hour+1]}"
-        minute in 40 .. 44 -> "${minutes[8]} ${hours[if(hour==12) 1 else hour+1]}"
-        minute in 45 .. 49 -> "${minutes[9]} ${hours[if(hour==12) 1 else hour+1]}"
-        minute in 50 .. 54 -> "${minutes[10]} ${hours[if(hour==12) 1 else hour+1]}"
-        minute in 55 .. 59 -> "${minutes[11]} ${hours[if(hour==12) 1 else hour+1]}"
+    return when (minute) {
+        in 0..4 -> "${hours[hour]} ${minutes[0]}"
+        in 5..9 -> "${minutes[1]} ${hours[hour]}"
+        in 10 .. 14 -> "${minutes[2]} ${hours[hour]}"
+        in 15 .. 19 -> "${minutes[3]} ${hours[hour]}"
+        in 20 .. 24 -> "${minutes[4]} ${hours[hour]}"
+        in 25 .. 29 -> "${minutes[5]} ${hours[hour]}"
+        in 30 .. 34 -> "${minutes[6]} ${hours[hour]}"
+        in 35 .. 39 -> "${minutes[7]} ${hours[if(hour==12) 1 else hour+1]}"
+        in 40 .. 44 -> "${minutes[8]} ${hours[if(hour==12) 1 else hour+1]}"
+        in 45 .. 49 -> "${minutes[9]} ${hours[if(hour==12) 1 else hour+1]}"
+        in 50 .. 54 -> "${minutes[10]} ${hours[if(hour==12) 1 else hour+1]}"
+        in 55 .. 59 -> "${minutes[11]} ${hours[if(hour==12) 1 else hour+1]}"
         else -> {"something went wrong"}
     }
 }

@@ -27,8 +27,7 @@ fun ClockScreen(viewModel: ClockViewModel = viewModel()) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         MainClock(currentHour = hour, currentMinute = minute, currentSecond = second)
-        TimeInText(hour = hour%12, minute = minute)
+        TimeInText(hour = if (hour == 0 || hour == 12) 12 else hour % 12, minute = minute)
         CardSection()
     }
-
 }
