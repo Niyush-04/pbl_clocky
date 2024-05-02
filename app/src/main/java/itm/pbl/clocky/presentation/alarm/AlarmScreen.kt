@@ -36,7 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import itm.pbl.clocky.navigation.Routes
+import itm.pbl.clocky.navigation.Constants
 
 
 
@@ -69,7 +69,7 @@ fun AlarmScreen(
                     state.hour.value = ""
                     state.minute.value = ""
                     state.title.value = ""
-                    navController.navigate(Routes.CREATE_ALARM_SCREEN)
+                    navController.navigate(Constants.CREATE_ALARM_SCREEN)
                 }) {
                     Icon(imageVector = Icons.Rounded.AlarmAdd, contentDescription = "Add new Alarm")
                 }

@@ -24,20 +24,20 @@ fun ClockyNavigationGraph(
         startDestination = startDestination,
     )
     {
-        composable(route = Routes.CLOCK_SCREEN) {
+        composable(route = Constants.CLOCK_SCREEN) {
             ClockScreen()
         }
-        composable(route = Routes.ALARM_SCREEN) {
+        composable(route = Constants.ALARM_SCREEN) {
             AlarmScreen(
                 state = state,
                 navController = navController,
                 onEvent = onEvent,
             )
         }
-        composable(route = Routes.POMODORO_SCREEN) {
+        composable(route = Constants.POMODORO_SCREEN) {
             PomodoroScreen()
         }
-        composable(route = Routes.CREATE_ALARM_SCREEN) {
+        composable(route = Constants.CREATE_ALARM_SCREEN) {
             CreateAlarmScreen(
                 state = state,
                 navController = navController,
@@ -52,17 +52,17 @@ fun ClockyNavigationGraph(
 sealed class Screens(val route: String, val title: String ) {
 
     data object Alarm : Screens(
-        route = Routes.ALARM_SCREEN,
+        route = Constants.ALARM_SCREEN,
         title = "Alarm"
     )
 
     data object Clock : Screens(
-        route = Routes.CLOCK_SCREEN,
+        route = Constants.CLOCK_SCREEN,
         title = "Clock"
     )
 
     data object Pomodoro : Screens(
-        route = Routes.POMODORO_SCREEN,
+        route = Constants.POMODORO_SCREEN,
         title = "Pomodoro"
     )
 

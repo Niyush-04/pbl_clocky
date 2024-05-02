@@ -1,9 +1,12 @@
 package itm.pbl.clocky
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,10 +38,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import dagger.hilt.android.AndroidEntryPoint
 import itm.pbl.clocky.data.AlarmDatabase
 import itm.pbl.clocky.navigation.ClockyNavigationGraph
-import itm.pbl.clocky.navigation.Routes
+import itm.pbl.clocky.navigation.Constants
 import itm.pbl.clocky.navigation.Screens
 import itm.pbl.clocky.presentation.alarm.AlarmViewModel
 import itm.pbl.clocky.ui.theme.ClockyTheme
@@ -63,9 +70,21 @@ class MainActivity : ComponentActivity() {
         }
     )
 
+    @OptIn(ExperimentalPermissionsApi::class)
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
+            val permissionState =
+                rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+            LaunchedEffect(key1 = Unit) {
+                if(!permissionState.status.isGranted)
+                permissionState.launchPermissionRequest()
+                
+            }
+            
             ClockyTheme {
 
                 val navController = rememberNavController()
@@ -83,7 +102,7 @@ class MainActivity : ComponentActivity() {
 
                         ClockyNavigationGraph(
                             navController = navController,
-                            startDestination = Routes.CLOCK_SCREEN,
+                            startDestination = Constants.CLOCK_SCREEN,
                             state = state,
                             onEvent = viewModel::onEvent
                         )
@@ -144,7 +163,9 @@ fun AddItem(
             Text(
                 style = TextStyle(
                     fontSize = 25.sp,
-                    color = if (selected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    color = if (selected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground.copy(
+                        alpha = 0.5f
+                    ),
                     fontWeight = FontWeight.Medium,
                     fontFamily = FontFamily.SansSerif
                 ),

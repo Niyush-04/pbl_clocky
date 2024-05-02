@@ -88,4 +88,7 @@ dependencies {
     // LiveData
     implementation(libs.androidx.runtime.livedata)
 
+    // Permission
+    implementation(libs.accompanist.permissions)
+
 }

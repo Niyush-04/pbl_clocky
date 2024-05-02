@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -52,6 +53,8 @@ fun PomodoroScreen() {
 fun PomodoroElements(pomodoroViewModel: PomodoroViewModel = viewModel()) {
     val uiState by pomodoroViewModel.uiState.collectAsState()
     val currentView = LocalView.current
+    val context = LocalContext.current
+    val notificationService = NotificationService(context)
 
     // To Keep screen awake
     DisposableEffect(Unit) {
@@ -113,7 +116,12 @@ TODO: will fix it later
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    modifier = Modifier.padding(top = 0.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
+                    modifier = Modifier.padding(
+                        top = 0.dp,
+                        bottom = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    ),
                     text = buildAnnotatedString {
                         append("➜ 30min = 25min focus + 5min break\n")
                         append("➜ 60min = 50min focus + 10min break")
@@ -135,17 +143,23 @@ TODO: will fix it later
                 )
             }
         }
-        AnimatedVisibility(visible = uiState.isPaused,
-            )
+        AnimatedVisibility(
+            visible = uiState.isPaused,
+        )
 
         {
+
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
             ) {
                 Button(
-                    onClick = { pomodoroViewModel.startTimer(30) },
+                    onClick = {
+                        pomodoroViewModel.startTimer(30)
+                        notificationService.showNotification("started")
+                    },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .padding(16.dp)
@@ -157,7 +171,10 @@ TODO: will fix it later
                 }
 
                 Button(
-                    onClick = { pomodoroViewModel.startTimer(60) },
+                    onClick = {
+                        pomodoroViewModel.startTimer(60)
+                        notificationService.showNotification("started")
+                    },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .padding(16.dp)
@@ -169,9 +186,12 @@ TODO: will fix it later
                 }
             }
         }
-        AnimatedVisibility(visible = !uiState.isPaused){
+        AnimatedVisibility(visible = !uiState.isPaused) {
             Button(
-                onClick = { pomodoroViewModel.resetTimer() },
+                onClick = {
+                    pomodoroViewModel.resetTimer()
+                    notificationService.showNotification("Restart")
+                },
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .padding(16.dp)
