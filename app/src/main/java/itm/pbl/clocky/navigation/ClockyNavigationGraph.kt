@@ -6,13 +6,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import itm.pbl.clocky.MainActivity
 import itm.pbl.clocky.presentation.alarm.ABoolViewModel
 import itm.pbl.clocky.presentation.alarm.AlarmEvent
 import itm.pbl.clocky.presentation.alarm.AlarmScreen
 import itm.pbl.clocky.presentation.alarm.AlarmState
 import itm.pbl.clocky.presentation.alarm.AlarmViewModel1
-import itm.pbl.clocky.presentation.alarm.CreateAlarmScreen
 import itm.pbl.clocky.presentation.clock.ClockScreen
 import itm.pbl.clocky.presentation.pomodoro.PomodoroScreen
 
@@ -39,26 +37,20 @@ fun ClockyNavigationGraph(
         composable(route = Constants.ALARM_SCREEN) {
             AlarmScreen(
                 state = state,
-                navController = navController,
                 onEvent = onEvent,
-            )
-        }
-        composable(route = Constants.POMODORO_SCREEN) {
-            PomodoroScreen()
-        }
-        composable(route = Constants.CREATE_ALARM_SCREEN) {
-            CreateAlarmScreen(
                 activity = activity,
                 alarmViewModel = alarmViewModel,
                 regBoolViewModel = regBoolViewModel
             )
         }
+        composable(route = Constants.POMODORO_SCREEN) {
+            PomodoroScreen()
+        }
     }
 }
 
 
-
-sealed class Screens(val route: String, val title: String ) {
+sealed class Screens(val route: String, val title: String) {
 
     data object Alarm : Screens(
         route = Constants.ALARM_SCREEN,

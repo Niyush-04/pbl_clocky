@@ -58,8 +58,8 @@ class AlarmViewModel(
 
                 _state.update {
                     it.copy(
-                        hour = mutableStateOf(""),
-                        minute = mutableStateOf(""),
+                        hour = mutableStateOf(0),
+                        minute = mutableStateOf(0),
                         title = mutableStateOf("")
                     )
                 }

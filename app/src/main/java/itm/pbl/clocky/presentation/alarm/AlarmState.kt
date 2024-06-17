@@ -6,7 +6,7 @@ import itm.pbl.clocky.data.alarm.Alarm
 
 data class AlarmState(
     val alarms: List<Alarm> = emptyList(),
-    val hour: MutableState<String> = mutableStateOf(""),
-    val minute: MutableState<String> = mutableStateOf(""),
+    val hour: MutableState<Int> = mutableStateOf(0),
+    val minute: MutableState<Int> = mutableStateOf(0),
     val title: MutableState<String> = mutableStateOf("")
 )

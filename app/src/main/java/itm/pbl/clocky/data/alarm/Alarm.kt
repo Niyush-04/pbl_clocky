@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Alarm(
     @PrimaryKey(autoGenerate = true)
     val alarmId: Int = 0,
-    var hour: String,
-    var minute: String,
+    var hour: Int,
+    var minute: Int,
     var title: String,
 )

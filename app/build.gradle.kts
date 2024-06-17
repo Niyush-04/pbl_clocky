@@ -92,4 +92,7 @@ dependencies {
     // Permission
     implementation(libs.accompanist.permissions)
 
+    // Lottie Animation
+    implementation(libs.lottie.compose)
+
 }
