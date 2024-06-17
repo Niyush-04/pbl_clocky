@@ -6,8 +6,8 @@ sealed interface AlarmEvent {
     data class DeleteAlarm(val alarm: Alarm): AlarmEvent
 
     data class SaveAlarm(
-        val hour: Int,
-        val minute: Int,
+        val hour: String,
+        val minute: String,
         val title: String
     ): AlarmEvent
 }

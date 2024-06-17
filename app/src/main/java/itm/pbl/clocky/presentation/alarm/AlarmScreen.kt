@@ -63,6 +63,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import itm.pbl.clocky.alarmManager.AlarmReceiver
 import itm.pbl.clocky.alarmManager.setAlarm
 import java.time.LocalTime
@@ -81,11 +82,12 @@ fun AlarmScreen(
         verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth(0.7f)
-                .aspectRatio(1f)
-                .scale(1.5f)
+                .aspectRatio(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             AlarmAnimation()
         }
@@ -112,16 +114,18 @@ fun AlarmScreen(
                 FloatingActionButton(
                     modifier = Modifier.size(70.dp),
                     shape = CircleShape,
+                    containerColor = MaterialTheme.colorScheme.primary,
                     onClick = {
                         showBotSheetToEdit = true
-                        state.hour.value = 0
-                        state.minute.value = 0
+                        state.hour.value = ""
+                        state.minute.value = ""
                         state.title.value = ""
                     }) {
                     Icon(
                         modifier = Modifier.fillMaxSize(0.6f),
                         imageVector = Icons.Rounded.AlarmAdd,
-                        contentDescription = "Add new Alarm"
+                        contentDescription = "Add new Alarm",
+                        tint = MaterialTheme.colorScheme.primaryContainer
                     )
                 }
             }, floatingActionButtonPosition = FabPosition.Center
@@ -230,7 +234,9 @@ fun BotSheetContent(
         sheetState = sheetState
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(start = 16.dp, end = 16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -267,74 +273,48 @@ fun BotSheetContent(
             )
 
 
-            Spacer(modifier = Modifier.padding(8.dp))
             Box(
-                modifier = Modifier.weight(3f)
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(MaterialTheme.colorScheme.primary),
             ) {
                 TimePicker(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .align(alignment = Alignment.Center),
                     state = timePickerState
                 )
             }
 
+            Button(
+                modifier = Modifier
+                    .padding(vertical = 24.dp)
+                    .fillMaxWidth(0.9f),
+                onClick = {
+                    val hour = timePickerState.hour
+                    val minute = timePickerState.minute
+                    state.hour.value = "%02d".format(hour)
+                    state.minute.value = "%02d".format(minute)
 
-            if (regAlarmSet) {
-                Text(
-                    text = "Selected Time $regAlarmTime",
-                )
-            } else {
-                Text(
-                    text = "No AlarmSet"
-                )
-            }
-
-
-            if (!regAlarmSet) {
-                Button(
-                    onClick = {
-                        val hour = timePickerState.hour
-                        val minute = timePickerState.minute
-                        state.hour.value = hour
-                        state.minute.value = minute
-
-
-                        regAlarmTime = "%02d:%02d".format(hour, minute)
-                        regAlarmSet = !regAlarmSet
-                        setAlarm(activity, hour, minute)
-                        onEvent(
-                            AlarmEvent.SaveAlarm(
-                                hour = state.hour.value,
-                                minute = state.minute.value,
-                                title = state.title.value
-                            )
+                    regAlarmTime = "%02d:%02d".format(hour, minute)
+                    regAlarmSet = !regAlarmSet
+                    setAlarm(activity, hour, minute)
+                    onEvent(
+                        AlarmEvent.SaveAlarm(
+                            hour = state.hour.value,
+                            minute = state.minute.value,
+                            title = state.title.value
                         )
-
-                    }, modifier = Modifier
-                        .padding(vertical = 24.dp)
-                        .fillMaxWidth()
-
-                ) {
-                    Text("Set Regular Alarm")
+                    )
+                    onDismiss() //todo
                 }
+
+            ) {
+                Text("Set Alarm")
             }
-
-            if (regAlarmSet) {
-                Button(
-                    onClick = {
-                        cancelAlarm(activity)
-                        regAlarmSet = !regAlarmSet
-                    }, modifier = Modifier
-                        .padding(vertical = 24.dp)
-                        .fillMaxWidth()
-
-                ) {
-                    Text("Cancel Regular Alarm")
-                }
-            }
-
         }
-
     }
-
 }
 
 

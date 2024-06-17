@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         Room.databaseBuilder(
             applicationContext,
             AlarmDatabase::class.java,
-            "room.db"
+            "alarm.db"
         ).build()
     }
 
