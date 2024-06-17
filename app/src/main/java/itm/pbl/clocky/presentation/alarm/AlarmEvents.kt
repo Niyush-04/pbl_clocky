@@ -1,6 +1,6 @@
 package itm.pbl.clocky.presentation.alarm
 
-import itm.pbl.clocky.data.Alarm
+import itm.pbl.clocky.data.alarm.Alarm
 
 sealed interface AlarmEvent {
     data class DeleteAlarm(val alarm: Alarm): AlarmEvent

@@ -1,12 +1,17 @@
 package itm.pbl.clocky.navigation
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import itm.pbl.clocky.MainActivity
+import itm.pbl.clocky.presentation.alarm.ABoolViewModel
 import itm.pbl.clocky.presentation.alarm.AlarmEvent
 import itm.pbl.clocky.presentation.alarm.AlarmScreen
 import itm.pbl.clocky.presentation.alarm.AlarmState
+import itm.pbl.clocky.presentation.alarm.AlarmViewModel1
 import itm.pbl.clocky.presentation.alarm.CreateAlarmScreen
 import itm.pbl.clocky.presentation.clock.ClockScreen
 import itm.pbl.clocky.presentation.pomodoro.PomodoroScreen
@@ -16,8 +21,12 @@ fun ClockyNavigationGraph(
     navController: NavHostController,
     startDestination: String,
     state: AlarmState,
-    onEvent: (AlarmEvent) -> Unit
+    onEvent: (AlarmEvent) -> Unit,
+    activity: AppCompatActivity
 ) {
+
+    val alarmViewModel: AlarmViewModel1 = viewModel()
+    val regBoolViewModel: ABoolViewModel = viewModel()
 
     NavHost(
         navController = navController,
@@ -39,9 +48,9 @@ fun ClockyNavigationGraph(
         }
         composable(route = Constants.CREATE_ALARM_SCREEN) {
             CreateAlarmScreen(
-                state = state,
-                navController = navController,
-                onEvent = onEvent
+                activity = activity,
+                alarmViewModel = alarmViewModel,
+                regBoolViewModel = regBoolViewModel
             )
         }
     }

@@ -3,8 +3,8 @@ package itm.pbl.clocky.presentation.alarm
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import itm.pbl.clocky.data.Alarm
-import itm.pbl.clocky.data.AlarmDao
+import itm.pbl.clocky.data.alarm.Alarm
+import itm.pbl.clocky.data.alarm.AlarmDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

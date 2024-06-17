@@ -3,10 +3,10 @@ package itm.pbl.clocky
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
@@ -42,7 +43,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import dagger.hilt.android.AndroidEntryPoint
-import itm.pbl.clocky.data.AlarmDatabase
+import itm.pbl.clocky.data.alarm.AlarmDatabase
 import itm.pbl.clocky.navigation.ClockyNavigationGraph
 import itm.pbl.clocky.navigation.Constants
 import itm.pbl.clocky.navigation.Screens
@@ -50,7 +51,7 @@ import itm.pbl.clocky.presentation.alarm.AlarmViewModel
 import itm.pbl.clocky.ui.theme.ClockyTheme
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val database by lazy {
         Room.databaseBuilder(
@@ -75,18 +76,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             val permissionState =
                 rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 
             LaunchedEffect(key1 = Unit) {
                 if(!permissionState.status.isGranted)
                 permissionState.launchPermissionRequest()
-                
-            }
-            
-            ClockyTheme {
 
+            }
+
+            ClockyTheme {
                 val navController = rememberNavController()
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -104,7 +103,8 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             startDestination = Constants.CLOCK_SCREEN,
                             state = state,
-                            onEvent = viewModel::onEvent
+                            onEvent = viewModel::onEvent,
+                            activity = this
                         )
                     }
                 }
@@ -112,7 +112,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 @Composable
 fun BottomBar(navController: NavHostController) {

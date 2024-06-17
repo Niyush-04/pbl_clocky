@@ -1,4 +1,4 @@
-package itm.pbl.clocky.data
+package itm.pbl.clocky.data.alarm
 
 import androidx.room.Dao
 import androidx.room.Delete
